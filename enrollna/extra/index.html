@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <style>
+        /* Step 1: Establish a containment context on the parent */
+        .post-wrapper {
+            container-type: inline-size;
+            /* Tells the browser to track this element's width */
+            container-name: card-parent;
+            /* Optional: Names the container for specific targeting */
+        }
+
+        /* Default mobile/narrow styling for the child card */
+        .card {
+            display: flex;
+            flex-direction: column;
+            background: #f0f0f0;
+        }
+
+        /* Step 2: Write a query targeting the container's width */
+        @container card-parent (width >=500px) {
+            .card {
+                flex-direction: row;
+                /* Switches to side-by-side layout when parent is wide */
+                background: #e0f7fa;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+
+        <button @click="CurrentPage = 'Home'">Home</button>
+        <button @click="CurrentPage = 'Profile'">Profile</button>
+        <button @click="CurrentPage = 'Settings'">Settings</button>
+
+        <div v-if="CurrentPage == 'Home'">
+            <p>You are home bro👌</p>
+
+            <input type="text" v-model="Search" placeholder="Search a fruit bitch!">
+            <ul v-if="Search">
+                <li v-for="Prutas in FilteredFruits" style="list-style: none;"> {{Prutas.Emoji}} {{Prutas.Name}}
+                    {{Prutas.Price}} <button @click="AddToTotal()">Buy</button>
+                </li>
+            </ul>
+            <br>
+            <br>
+            <span>Total:</span> {{Total}} <br>
+            <button @click="Total = 0">Clear Cart</button>
+        </div>
+
+        <div v-if="CurrentPage == 'Profile'">
+            <p>You are in Profile bro👌</p>
+        </div>
+
+        <div v-if="CurrentPage == 'Settings'">
+            <p>You are Setting up bro👌</p>
+
+            <!-- The designated parent container -->
+            <div class="post-wrapper">
+                <!-- The child component that will adapt -->
+                <div class="card">
+                    <h2>Card Title</h2>
+                    <p>Card body text goes here.</p>
+                </div>
+            </div>
+
+
+
+        </div>
+
+    </div>
+
+
+    <script>
+        const { createApp, ref } = Vue;
+
+        createApp({
+            setup() {
+                const CurrentPage = ref("Home");
+
+                const Total = ref(0);
+
+                const Search = ref("");
+
+                const Fruits = ref([
+                    { Name: "Apple", Emoji: "🍎", Price: 25 },
+                    { Name: "Mango", Emoji: "🥭", Price: 15 },
+                    { Name: "Banana", Emoji: "🍌", Price: 10 },
+                    { Name: "Orange", Emoji: "🍊", Price: 30 },
+                ]);
+
+                const FilteredFruits = ref([...Fruits.value]);
+
+                function AddToTotal() {
+                    Total.value++;
+                }
+
+                function SearchFilter() {
+
+                    FilteredFruits.value = [];
+
+                    for (let i = 0; i < Fruits.value.length; i++) {
+                        if (Fruits.value[i].Name.toLowerCase().includes(Search.value.toLowerCase())) {
+                            FilteredFruits.value.push(Fruits.value[i]);
+                        }
+                    }
+                }
+
+                return {
+                    CurrentPage,
+                    Fruits,
+                    Total,
+                    AddToTotal,
+                    FilteredFruits,
+                    Search,
+                    SearchFilter,
+                };
+            },
+
+            watch: {
+                Search() {
+                    this.SearchFilter();
+                }
+            }
+        }).mount('#app');
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,40 @@
+body {
+  background: #f5f7fa;
+}
+
+.header {
+  background: #0b2545;
+  color: white;
+  padding: 25px;
+  text-align: center;
+}
+
+.header h2 {
+  color: #ffc72c;
+  margin: 0;
+  font-weight: bold;
+}
+
+.card {
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+}
+
+.section-title {
+  color: #0b2545;
+  border-bottom: 2px solid #ffc72c;
+  padding-bottom: 5px;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+.btn-ayysat {
+  background: #0b2545;
+  color: white;
+}
+
+.btn-ayysat:hover {
+  background: #071b34;
+  color: white;
+}

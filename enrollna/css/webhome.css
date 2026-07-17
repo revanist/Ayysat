@@ -1,0 +1,123 @@
+:root {
+  --academy-blue: #0d3b66;
+  --academy-yellow: #f4d35e;
+  --academy-orange: #f39c12;
+  --academy-light: #faf0ca;
+}
+
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f8f9fa;
+}
+
+.bg-academy {
+  background-color: var(--academy-blue);
+}
+
+.navbar .nav-link {
+  color: #ffffff;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.navbar .nav-link:hover,
+.navbar .nav-link.active {
+  color: var(--academy-yellow);
+}
+
+.btn-apply {
+  background-color: var(--academy-orange);
+  color: white;
+  font-weight: 600;
+  border-radius: 50px;
+  padding: 8px 24px;
+  border: 2px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.btn-apply:hover {
+  background-color: transparent;
+  border-color: var(--academy-orange);
+  color: var(--academy-orange);
+}
+
+.hero-section {
+  background: linear-gradient(135deg, var(--academy-blue) 60%, #164e85 100%);
+  color: white;
+  padding: 100px 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-section::after {
+  content: "";
+  position: absolute;
+  top: -20%;
+  right: -10%;
+  width: 500px;
+  height: 500px;
+  background: var(--academy-yellow);
+  border-radius: 50%;
+  z-index: 1;
+  opacity: 0.1;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+}
+
+.badge-admission {
+  background-color: var(--academy-yellow);
+  color: var(--academy-blue);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  padding: 8px 16px;
+  border-radius: 4px;
+  display: inline-block;
+}
+
+.hero-title {
+  font-size: 3.5rem;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.text-yellow {
+  color: var(--academy-yellow);
+}
+
+.img-frame {
+  border: 10px solid white;
+  border-radius: 20px;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+  position: relative;
+  z-index: 2;
+}
+
+footer {
+  background: #1f2937;
+}
+
+footer a {
+  transition: 0.3s;
+}
+
+footer a:hover {
+  color: #ffc107 !important;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+.hero-section {
+  flex: 1;
+}

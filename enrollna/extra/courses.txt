@@ -1,0 +1,30 @@
+ito ay sa loob ng courses
+
+INSERT INTO courses (course_code, course_name) VALUES
+('BSIT', 'Bachelor of Science in Information Technology'),
+('BSCS', 'Bachelor of Science in Computer Science'),
+('BSIS', 'Bachelor of Science in Information Systems'),
+('BSEMC', 'Bachelor of Science in Entertainment and Multimedia Computing'),
+('BSBA', 'Bachelor of Science in Business Administration'),
+('BSA', 'Bachelor of Science in Accountancy'),
+('BSHM', 'Bachelor of Science in Hospitality Management'),
+('BSTM', 'Bachelor of Science in Tourism Management'),
+('BSCRIM', 'Bachelor of Science in Criminology'),
+('BSN', 'Bachelor of Science in Nursing'),
+('BSMT', 'Bachelor of Science in Medical Technology'),
+('BSPH', 'Bachelor of Science in Pharmacy'),
+('BSED', 'Bachelor of Secondary Education'),
+('BEED', 'Bachelor of Elementary Education'),
+('BSCE', 'Bachelor of Science in Civil Engineering'),
+('BSEE', 'Bachelor of Science in Electrical Engineering'),
+('BSME', 'Bachelor of Science in Mechanical Engineering'),
+('BSCHE', 'Bachelor of Science in Chemical Engineering'),
+('BSARCH', 'Bachelor of Science in Architecture'),
+('ABCOMM', 'Bachelor of Arts in Communication');
+
+add this too:
+
+UPDATE enrollments
+SET payment_status='paid'
+WHERE id='$id'
+AND STATUS='approved';
