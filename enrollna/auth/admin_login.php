@@ -1,6 +1,7 @@
 <?php
+require_once __DIR__ . '/../functions/session_security.php';
+start_secure_session();
 
-session_start();
 require "../db/dbconn.php";
 
 if (isset($_SESSION['admin_id'])) {
@@ -9,6 +10,8 @@ if (isset($_SESSION['admin_id'])) {
 }
 
 $error = "";
+$success = $_SESSION['success'] ?? '';
+unset($_SESSION['success']);
 
 if (isset($_POST['login'])) {
 
@@ -42,10 +45,11 @@ if (isset($_POST['login'])) {
                 password_verify($password, $admin['password'])
             ) {
 
+                session_regenerate_id(true);
                 $_SESSION['admin_id'] = $admin['id'];
                 $_SESSION['admin_name'] = $admin['fullname'];
                 $_SESSION['admin_email'] = $admin['email'];
-                header("Location: ../admin/admin_dashboard.php");
+                echo '<script>window.location.replace("../admin/admin_dashboard.php");</script>';
                 exit();
             } else {
                 $error = "Invalid email or password.";
@@ -65,9 +69,8 @@ if (isset($_POST['login'])) {
     <meta name="viewport"
         content="width=device-width, initial-scale=1.0">
     <title>Admin Login</title>
-    <link rel="stylesheet"
-        href="../css/style.css">
-    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <link rel="stylesheet" href="../css/auth.css">
+    <script src="../js/sweetalert2.all.min.js"></script>
 
 </head>
 
@@ -76,30 +79,12 @@ if (isset($_POST['login'])) {
     <div class="container">
         <div class="card">
             <div class="logo">
-                <img src="../img/eyysat.png" alt="Logo">
-
+                <a href="../webhome.php">
+                    <img src="../img/eyysat.png" alt="AYYSAT Logo">
+                </a>
                 <h1>Eyysat</h1>
                 <p>Administrator Login</p>
             </div>
-
-            <?php if ($error != "") { ?>
-
-                <div class="alert alert-error">
-                    <?php echo htmlspecialchars($error); ?>
-                </div>
-            <?php } ?>
-
-            <?php
-            if (isset($_SESSION['success'])) { ?>
-
-                <div class="alert alert-success">
-
-                    <?php
-                    echo $_SESSION['success'];
-                    unset($_SESSION['success']);
-                    ?>
-                </div>
-            <?php } ?>
 
             <form method="POST">
                 <div class="form-group">
@@ -122,6 +107,14 @@ if (isset($_POST['login'])) {
         </div>
 
     </div>
+
+    <script>
+        <?php if ($error !== ''): ?>
+            Swal.fire({ icon: 'error', text: <?= json_encode($error) ?>, confirmButtonText: 'Try Again' });
+        <?php elseif ($success !== ''): ?>
+            Swal.fire({ icon: 'success', text: <?= json_encode($success) ?>, confirmButtonText: 'OK' });
+        <?php endif; ?>
+    </script>
 
 </body>
 

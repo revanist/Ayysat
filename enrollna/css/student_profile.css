@@ -1,0 +1,138 @@
+/*
+ * student_profile.css
+ * Thin override file — most styles now live in admin_dashboard.css.
+ * This file only patches elements that differ between the student
+ * profile layout and the admin dashboard layout.
+ */
+
+/* Re-export design tokens so profile-only rules can use them */
+:root {
+  --academy-blue:   #0d3b66;
+  --academy-yellow: #f4d35e;
+  --lime:           #f4d35e;
+  --purple:         #0d3b66;
+}
+
+/* The profile page uses body.profile-page; ensure it inherits the dark theme */
+body.profile-page {
+  background: #02040f !important;
+  color: #f0f0f8 !important;
+}
+
+/* Remove decorative background circle graphics (the giant drawing overlay) from top of dashboard */
+.profile-page .hero::after {
+  content: none !important;
+  display: none !important;
+}
+
+/* Student avatar in hero */
+.student-avatar,
+.student-avatar img {
+  width: 78px;
+  height: 78px;
+  border-radius: 50%;
+}
+.student-avatar {
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: rgba(255,255,255,.1);
+  color: var(--lime);
+  border: 3px solid var(--lime);
+  box-shadow: 0 8px 20px rgba(0,0,0,.3);
+  font-size: 1.7rem;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+.student-avatar img { object-fit: cover; }
+.student-id { display: flex; align-items: center; gap: 1rem; margin-top: 1.4rem; }
+.student-id strong { display: block; font-size: 1.25rem; color: #fff; }
+.student-id span   { color: rgba(255,255,255,.65); font-size: .88rem; }
+
+/* Fix card background and typography colors matching EYYSAT Academy theme */
+.profile-page .analytics-grid .card {
+  background: #0b2545;
+  color: #f0f0f8;
+}
+.profile-page .analytics-grid .card h3 { color: var(--lime) !important; }
+.profile-page .analytics-grid .card h3::after {
+  background: linear-gradient(to right, rgba(244,211,94,.4), transparent) !important;
+}
+
+.schedule-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+.schedule-heading p { margin: .25rem 0 0; color: #b0cceb; }
+.schedule-term {
+  padding: .4rem .7rem;
+  color: #0d3b66;
+  background: var(--academy-yellow);
+  border-radius: 999px;
+  font-size: .8rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+.weekly-schedule {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(150px, 1fr));
+  gap: .75rem;
+  overflow-x: auto;
+  padding-bottom: .25rem;
+}
+.schedule-day {
+  min-width: 150px;
+  padding: .8rem;
+  background: rgba(255,255,255,.05);
+  border: 1px solid rgba(244,211,94,.2);
+  border-radius: 12px;
+}
+.schedule-day h4 { margin: 0 0 .7rem; color: var(--academy-yellow); font-size: .9rem; }
+.schedule-entry {
+  display: grid;
+  gap: .25rem;
+  margin-bottom: .65rem;
+  padding: .65rem;
+  color: #eaf4ff;
+  background: rgba(13,59,102,.75);
+  border-left: 3px solid var(--academy-yellow);
+  border-radius: 7px;
+  font-size: .82rem;
+}
+.schedule-entry small, .schedule-empty { color: #b0cceb; font-size: .78rem; }
+.schedule-empty { margin: .35rem 0; }
+
+@media (max-width: 700px) {
+  .schedule-heading { align-items: stretch; flex-direction: column; }
+  .schedule-term { align-self: flex-start; }
+  .weekly-schedule { grid-template-columns: repeat(5, minmax(190px, 1fr)); }
+}
+.profile-page .analytics-grid input,
+.profile-page .analytics-grid textarea {
+  background: rgba(255,255,255,.06) !important;
+  border-color: rgba(244,211,94,.18) !important;
+  color: #fff !important;
+}
+.profile-page .analytics-grid label { color: #b0cceb !important; }
+.profile-page .analytics-grid .btn {
+  background: linear-gradient(135deg, #f39c12, #f4d35e) !important;
+  color: #0d3b66 !important;
+  font-weight: 800 !important;
+}
+
+/* Registration form link */
+.profile-page .btn-doc {
+  background: linear-gradient(135deg, #d97706, #f59e0b);
+  color: #1c1500;
+  display: inline-block;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-weight: 700;
+  text-decoration: none;
+  font-size: .9rem;
+  transition: transform .25s;
+}
+.profile-page .btn-doc:hover { transform: translateY(-2px); }

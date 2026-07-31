@@ -1,44 +1,41 @@
 <?php
-session_start();
+require_once __DIR__ . '/../functions/admin_auth.php';
+require_admin_login();
 
-if (!isset($_SESSION['admin_id'])) {
-    header("Location: ../admin/admin_login.php");
-    exit();
-}
+    include "../db/dbconn.php";
 
-include "../db/dbconn.php";
 
-$totalStudents = mysqli_fetch_assoc(
-    mysqli_query($conn, "SELECT COUNT(*) AS total FROM students")
-)['total'];
+    $totalStudents = mysqli_fetch_assoc(
+        mysqli_query($conn, "SELECT COUNT(*) AS total FROM students")
+    )['total'];
 
-$totalCourses = mysqli_fetch_assoc(
-    mysqli_query($conn, "SELECT COUNT(*) AS total FROM courses")
-)['total'];
+    $totalCourses = mysqli_fetch_assoc(
+        mysqli_query($conn, "SELECT COUNT(*) AS total FROM courses")
+    )['total'];
 
-$totalSubjects = mysqli_fetch_assoc(
-    mysqli_query($conn, "SELECT COUNT(*) AS total FROM subjects")
-)['total'];
+    $totalSubjects = mysqli_fetch_assoc(
+        mysqli_query($conn, "SELECT COUNT(*) AS total FROM subjects")
+    )['total'];
 
-$totalSections = mysqli_fetch_assoc(
-    mysqli_query($conn, "SELECT COUNT(*) AS total FROM sections")
-)['total'];
+    $totalSections = mysqli_fetch_assoc(
+        mysqli_query($conn, "SELECT COUNT(*) AS total FROM sections")
+    )['total'];
 
-$totalEnrollments = mysqli_fetch_assoc(
-    mysqli_query($conn, "SELECT COUNT(*) AS total FROM enrollments")
-)['total'];
+    $totalEnrollments = mysqli_fetch_assoc(
+        mysqli_query($conn, "SELECT COUNT(*) AS total FROM enrollments")
+    )['total'];
 
-$approved = mysqli_fetch_assoc(
-    mysqli_query($conn, "SELECT COUNT(*) AS total FROM enrollments WHERE STATUS='approved'")
-)['total'];
+    $approved = mysqli_fetch_assoc(
+        mysqli_query($conn, "SELECT COUNT(*) AS total FROM enrollments WHERE STATUS='approved'")
+    )['total'];
 
-$pending = mysqli_fetch_assoc(
-    mysqli_query($conn, "SELECT COUNT(*) AS total FROM enrollments WHERE STATUS='pending'")
-)['total'];
+    $pending = mysqli_fetch_assoc(
+        mysqli_query($conn, "SELECT COUNT(*) AS total FROM enrollments WHERE STATUS='pending'")
+    )['total'];
 
-$rejected = mysqli_fetch_assoc(
-    mysqli_query($conn, "SELECT COUNT(*) AS total FROM enrollments WHERE STATUS='rejected'")
-)['total'];
+    $rejected = mysqli_fetch_assoc(
+        mysqli_query($conn, "SELECT COUNT(*) AS total FROM enrollments WHERE STATUS='rejected'")
+    )['total'];
 ?>
 
 <!DOCTYPE html>
@@ -47,7 +44,7 @@ $rejected = mysqli_fetch_assoc(
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reports</title>
+    <title>Reports – EYYSAT</title>
     <link rel="stylesheet" href="../css/admin_dashboard.css">
 </head>
 
@@ -62,31 +59,35 @@ $rejected = mysqli_fetch_assoc(
         </div>
 
         <div class="stats-row">
-            <div class="stat-card">
+            <div class="stat-card stat-success">
+                <div class="stat-icon">🎓</div>
                 <h3>Students</h3>
                 <span><?php echo $totalStudents; ?></span>
             </div>
 
-            <div class="stat-card">
+            <div class="stat-card stat-section">
+                <div class="stat-icon">📚</div>
                 <h3>Courses</h3>
                 <span><?php echo $totalCourses; ?></span>
             </div>
 
-            <div class="stat-card">
+            <div class="stat-card stat-paid">
+                <div class="stat-icon">📖</div>
                 <h3>Subjects</h3>
                 <span><?php echo $totalSubjects; ?></span>
             </div>
 
-            <div class="stat-card">
+            <div class="stat-card stat-warning">
+                <div class="stat-icon">🏫</div>
                 <h3>Sections</h3>
                 <span><?php echo $totalSections; ?></span>
             </div>
 
-            <div class="stat-card">
+            <div class="stat-card stat-success">
+                <div class="stat-icon">📋</div>
                 <h3>Enrollments</h3>
                 <span><?php echo $totalEnrollments; ?></span>
             </div>
-
         </div>
 
         <div class="analytics-grid">
@@ -197,6 +198,6 @@ $rejected = mysqli_fetch_assoc(
         </div>
 
     </div>
+<script>window.addEventListener('pageshow',e=>{if(e.persisted)window.location.reload();});</script>
 </body>
-
 </html>

@@ -1,41 +1,45 @@
 <?php
+require_once __DIR__ . '/../functions/admin_auth.php';
+require_admin_login();
+require_admin_csrf();
 
-include "../db/dbconn.php";
-
-
-$id = $_POST['id'];
-
-$first_name = $_POST['first_name'];
-$middle_name = $_POST['middle_name'];
-$last_name = $_POST['last_name'];
-$address = $_POST['address'];
-$contact = $_POST['contact'];
-
-
-$sql = "
-
-UPDATE students SET
-
-first_name='$first_name',
-middle_name='$middle_name',
-last_name='$last_name',
-address='$address',
-contact='$contact'
-
-WHERE id='$id'
-
-";
-
-
-$result = mysqli_query($conn, $sql);
-
-
-if ($result) {
-
-    header("Location: ../admin/students.php");
-    exit();
-} else {
-
-    echo "Update failed: ";
-    echo mysqli_error($conn);
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    header('Location: ../admin/students.php', true, 303);
+    exit;
 }
+
+include '../db/dbconn.php';
+
+$id          = (int) ($_POST['id'] ?? 0);
+$first_name  = trim((string) ($_POST['first_name'] ?? ''));
+$middle_name = trim((string) ($_POST['middle_name'] ?? ''));
+$last_name   = trim((string) ($_POST['last_name'] ?? ''));
+$email       = trim((string) ($_POST['email'] ?? ''));
+$address     = trim((string) ($_POST['address'] ?? ''));
+$contact     = trim((string) ($_POST['contact'] ?? ''));
+
+if ($id < 1 || $first_name === '' || $last_name === '') {
+    http_response_code(400);
+    exit('Invalid student update parameters.');
+}
+
+$stmt = mysqli_prepare($conn, '
+    UPDATE students SET
+        first_name = ?,
+        middle_name = ?,
+        last_name = ?,
+        email = ?,
+        address = ?,
+        contact = ?
+    WHERE id = ?
+');
+mysqli_stmt_bind_param($stmt, 'ssssssi', $first_name, $middle_name, $last_name, $email, $address, $contact, $id);
+
+if (mysqli_stmt_execute($stmt)) {
+    mysqli_stmt_close($stmt);
+    header('Location: ../admin/students.php', true, 303);
+    exit;
+}
+
+http_response_code(500);
+echo 'Update failed. Please try again.';

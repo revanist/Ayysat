@@ -1,9 +1,14 @@
 <?php
+require_once __DIR__ . '/../functions/session_security.php';
+start_secure_session();
 
-session_start();
-
-session_unset();
+$_SESSION = [];
+if (ini_get('session.use_cookies')) {
+    $params = session_get_cookie_params();
+    setcookie(session_name(), '', time() - 42000, $params['path'], $params['domain'], $params['secure'], $params['httponly']);
+}
 session_destroy();
 
-header("Location: ../auth/login.php?success=logged_out");
-exit();
+header('Clear-Site-Data: "cache"');
+header('Location: ../auth/login.php?success=logged_out', true, 303);
+exit;

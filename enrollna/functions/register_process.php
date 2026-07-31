@@ -1,6 +1,6 @@
 <?php
-
-session_start();
+require_once __DIR__ . '/student_auth.php';
+start_student_session();
 require "../db/dbconn.php";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -79,17 +79,35 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if (mysqli_stmt_execute($stmt)) {
 
+        $user_id = mysqli_insert_id($conn);
         mysqli_stmt_close($stmt);
+
+        // Link a guest application only after its applicant creates the
+        // account using the same email address.
+        $link_application = mysqli_prepare($conn, 'UPDATE students SET user_id = ? WHERE user_id IS NULL AND email = ?');
+        mysqli_stmt_bind_param($link_application, 'is', $user_id, $username);
+        mysqli_stmt_execute($link_application);
+        $affected = mysqli_stmt_affected_rows($link_application);
+        mysqli_stmt_close($link_application);
+
+        // If no pre-existing application was linked, create an initial student record
+        if ($affected === 0) {
+            $stub_student = mysqli_prepare($conn, '
+                INSERT INTO students (user_id, first_name, last_name, email, payment_status, enrollment_status, remaining_balance)
+                VALUES (?, ?, ?, ?, \'Pending\', \'Pending\', 15000.00)
+            ');
+            mysqli_stmt_bind_param($stub_student, 'isss', $user_id, $firstname, $lastname, $username);
+            mysqli_stmt_execute($stub_student);
+            mysqli_stmt_close($stub_student);
+        }
 
         header("Location: ../auth/login.php?success=registered");
         exit();
     } else {
-
         mysqli_stmt_close($stmt);
         die("Registration failed: " . mysqli_error($conn));
     }
 } else {
-
     header("Location: ../auth/register.php");
     exit();
 }

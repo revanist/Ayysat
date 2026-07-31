@@ -1,5 +1,6 @@
 <?php
-session_start();
+require_once __DIR__ . '/../functions/session_security.php';
+start_secure_session();
 $_SESSION = array();
 
 if (ini_get("session.use_cookies")) {

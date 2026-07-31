@@ -1,6 +1,6 @@
 <?php
-
-session_start();
+require_once __DIR__ . '/student_auth.php';
+start_student_session();
 
 require "../db/dbconn.php";
 
@@ -60,6 +60,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             // Create session
 
+            session_regenerate_id(true);
             $_SESSION['user_id'] = $user['id'];
 
             $_SESSION['fullname'] = $user['fullname'];
@@ -75,7 +76,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if ($user['role'] == "student") {
 
 
-                header("Location: ../student/student_dashboard.php");
+                header('Location: ../student/profile.php', true, 303);
             }
 
 
